@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\YakLog.DataTransferring\YakLog.DataTransferring.csproj" />
+    <ProjectReference Include="..\YakLog.Persistence\YakLog.Persistence.csproj" />
   </ItemGroup>
 
 </Project>

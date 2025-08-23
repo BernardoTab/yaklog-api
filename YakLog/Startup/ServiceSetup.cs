@@ -1,4 +1,8 @@
-﻿using YakLogApi.Services.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
+using YakLog.Persistence.Repositories;
+using YakLogApi.Persistence;
+using YakLogApi.Services.Interfaces;
 
 namespace YakLogApi.Startup;
 
@@ -11,6 +15,12 @@ public static class ServiceSetup
             .AddClasses(classes => classes.AssignableTo<IService>())
             .AsImplementedInterfaces()
             .WithScopedLifetime()
+        );
+        services.Scan(scan => scan
+            .FromAssemblyOf<UserRepository>()
+            .AddClasses(classes => classes.Where(type => type.Name.EndsWith("Repository")))
+                .AsImplementedInterfaces()
+                .WithScopedLifetime()
         );
     }
 }

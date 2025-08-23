@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\YakLog.Application\YakLog.Application.csproj" />
+    <ProjectReference Include="..\YakLog.Persistence\YakLog.Persistence.csproj" />
   </ItemGroup>
 
 </Project>

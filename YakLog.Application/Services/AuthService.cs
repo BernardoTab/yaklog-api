@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using YakLog.Persistence.Repositories;
 using YakLogApi.Dtos;
 using YakLogApi.Services.Interfaces;
 
@@ -6,16 +7,19 @@ namespace YakLogApi.Services;
 
 public class AuthService : IAuthService
 {
-    private readonly ILogger<AuthService> _logger;
+    private readonly IUserRepository _repository;
 
-    public AuthService(ILogger<AuthService> logger)
+    public AuthService(IUserRepository repository)
     {
-        _logger = logger;
+        _repository = repository;
     }
 
-    public Task LoginAsync(UserInputDto user)
+    public async Task LoginAsync(UserInputDto userInput)
     {
-        _logger.LogInformation("Hello! I am a service");
-        return Task.CompletedTask;
+        var user = await _repository.GetByIdAsync(2);
+        if(user  == null)
+        {
+            throw new Exception("User doesnt exist!");
+        }
     }
 }
