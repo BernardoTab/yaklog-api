@@ -16,4 +16,13 @@ public class AuthController : ControllerBase
         var token = await authService.LoginAsync(userInput);
         return Ok(token);
     }
+
+    [HttpPost("register")]
+    public async Task<ActionResult<string>> Register(
+        [FromServices] IAuthService authService,
+        [FromBody] UserInputDto userInput)
+    {
+        var token = await authService.RegisterAsync(userInput);
+        return Ok(token);
+    }
 }
