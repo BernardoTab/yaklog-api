@@ -10,4 +10,11 @@ public class YakLogDbContext : DbContext
 
     public YakLogDbContext(DbContextOptions<YakLogDbContext> options)
         : base(options) { }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(YakLogDbContext).Assembly);
+
+        base.OnModelCreating(modelBuilder);
+    }
 }
