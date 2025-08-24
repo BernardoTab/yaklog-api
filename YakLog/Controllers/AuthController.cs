@@ -13,7 +13,7 @@ public class AuthController : ControllerBase
         [FromServices] IAuthService authService,
         [FromBody] UserInputDto userInput)
     {
-        await authService.LoginAsync(userInput);
-        return Ok();
+        var token = await authService.LoginAsync(userInput);
+        return Ok(token);
     }
 }

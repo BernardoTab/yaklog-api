@@ -4,5 +4,5 @@ namespace YakLogApi.Services.Interfaces;
 
 public interface IAuthService : IService
 {
-    Task LoginAsync(UserInputDto user);
+    Task<string> LoginAsync(UserInputDto user);
 }

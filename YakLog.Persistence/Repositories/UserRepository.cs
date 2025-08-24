@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,5 +13,10 @@ public class UserRepository : BaseRepository<User>, IUserRepository
 {
     public UserRepository(YakLogDbContext dbContext) : base(dbContext)
     {
+    }
+
+    public async Task<User?> GetUserByEmailAsync(string email)
+    {
+        return await _dbSet.FirstOrDefaultAsync(u => u.Email == email);
     }
 }

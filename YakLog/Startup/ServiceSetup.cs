@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
+using YakLog.Application.Services;
 using YakLog.Persistence.Repositories;
 using YakLogApi.Persistence;
 using YakLogApi.Services.Interfaces;
@@ -22,5 +23,6 @@ public static class ServiceSetup
                 .AsImplementedInterfaces()
                 .WithScopedLifetime()
         );
+        services.AddScoped<TokenService>();
     }
 }

@@ -10,7 +10,7 @@ using YakLogApi.Persistence;
 namespace YakLog.Persistence.Migrations
 {
     [DbContext(typeof(YakLogDbContext))]
-    [Migration("20250823160215_Initial")]
+    [Migration("20250824194309_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -32,13 +32,13 @@ namespace YakLog.Persistence.Migrations
                     b.Property<string>("ImageFilePath")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("PasswordHash")
+                    b.Property<byte[]>("PasswordHash")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("BLOB");
 
-                    b.Property<string>("PasswordSalt")
+                    b.Property<byte[]>("PasswordSalt")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("BLOB");
 
                     b.HasKey("Id");
 

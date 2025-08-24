@@ -17,8 +17,8 @@ namespace YakLog.Persistence.Migrations
                     Id = table.Column<long>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Email = table.Column<string>(type: "TEXT", nullable: false),
-                    PasswordSalt = table.Column<string>(type: "TEXT", nullable: false),
-                    PasswordHash = table.Column<string>(type: "TEXT", nullable: false),
+                    PasswordSalt = table.Column<byte[]>(type: "BLOB", nullable: false),
+                    PasswordHash = table.Column<byte[]>(type: "BLOB", nullable: false),
                     ImageFilePath = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
