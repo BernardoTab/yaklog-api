@@ -7,10 +7,8 @@ using YakLog.Domain.Entities.MediaItems.Interfaces;
 
 namespace YakLog.Domain.Entities.MediaItems;
 
-public class Movie : MediaItem, IFinishable
+public class SeriesSeasonItem : MediaItem,IFinishable
 {
-    public DateTime? Date { get; set; }
-    public string? Director { get; set; }
     public bool Finished { get; set; }
     public DateTime FinishedDate { get; set; }
 }

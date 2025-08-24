@@ -8,5 +8,6 @@ namespace YakLog.Domain.Entities.MediaItems;
 
 public class Series : MediaItem
 {
-    public required int Season { get; set; }
+    public required int NumberOfSeasons { get; set; }
+    public ICollection<SeriesSeasonItem> Seasons { get; set; } = new List<SeriesSeasonItem>();
 }
