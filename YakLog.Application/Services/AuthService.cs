@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using YakLog.Application.Helpers;
 using YakLog.Application.Services;
+using YakLog.DataTransferring.Responses;
 using YakLog.Persistence.Repositories;
 using YakLogApi.Dtos;
 using YakLogApi.Entities;
@@ -19,7 +20,7 @@ public class AuthService : IAuthService
         _tokenService = tokenService;
     }
 
-    public async Task<string> LoginAsync(UserInputDto userInput)
+    public async Task<LoginResponse> LoginAsync(UserInputDto userInput)
     {
         var user = await _repository.GetUserByEmailAsync(userInput.Email);
         if(user  == null)
@@ -37,10 +38,23 @@ public class AuthService : IAuthService
         }
 
         var token = _tokenService.GenerateToken(user.Email);
-        return token;
+        return GenerateLoginResponse(user.Id, user.Email,token);
     }
 
-    public async Task<string> RegisterAsync(UserInputDto userInput)
+    private LoginResponse GenerateLoginResponse(long userId, string email, string token)
+    {
+        return new LoginResponse
+        {
+            Token = token,
+            User = new UserScopeInfo
+            {
+                Id = userId,
+                Email = email,
+            }
+        };
+    }
+
+    public async Task<LoginResponse> RegisterAsync(UserInputDto userInput)
     {
         var existingUser = await _repository.GetUserByEmailAsync(userInput.Email);
         if (existingUser != null)
@@ -50,14 +64,16 @@ public class AuthService : IAuthService
 
         PasswordHelper.CreatePasswordHash(userInput.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
-        await _repository.AddAsync(new User
+        var newUser = new User
         {
             Email = userInput.Email,
             PasswordHash = passwordHash,
             PasswordSalt = passwordSalt
-        });
+        };
+        await _repository.AddAsync(newUser);
 
         var token = _tokenService.GenerateToken(userInput.Email);
-        return token;
+
+        return GenerateLoginResponse(newUser.Id,newUser.Email, token);
     }
 }

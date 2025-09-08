@@ -24,5 +24,6 @@ public static class ServiceSetup
                 .WithScopedLifetime()
         );
         services.AddScoped<TokenService>();
+
     }
 }
