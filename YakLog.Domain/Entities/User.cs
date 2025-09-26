@@ -1,4 +1,6 @@
-﻿namespace YakLogApi.Entities;
+﻿using YakLog.Domain.Entities;
+
+namespace YakLogApi.Entities;
 
 public class User
 {
@@ -7,4 +9,7 @@ public class User
     public required byte[] PasswordSalt { get; set; }
     public required byte[] PasswordHash { get; set; }
     public string? ImageFilePath { get; set; }
+
+
+    public Portfolio Portfolio { get; set; } = new();
 }

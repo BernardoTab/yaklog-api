@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using YakLog.Domain.Entities;
 using YakLogApi.Entities;
 
 namespace YakLog.Persistence.Configurations;
@@ -30,10 +31,14 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .IsRequired();
 
         builder.Property(u => u.ImageFilePath)
-           .HasMaxLength(500)
-           .IsUnicode(false);
+            .HasMaxLength(500)
+            .IsUnicode(false);
+
+        builder.HasOne(u => u.Portfolio)
+               .WithOne(p => p.User)
+               .HasForeignKey<Portfolio>(p => p.UserId);
 
         builder.HasIndex(u => u.Email)
-               .IsUnique();
+            .IsUnique();
     }
 }

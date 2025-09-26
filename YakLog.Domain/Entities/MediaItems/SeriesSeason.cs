@@ -7,8 +7,7 @@ using YakLog.Domain.Entities.MediaItems.Interfaces;
 
 namespace YakLog.Domain.Entities.MediaItems;
 
-public class SeriesSeasonItem : MediaItem,IFinishable
+public class SeriesSeason : MediaItem
 {
-    public bool Finished { get; set; }
-    public DateTime FinishedDate { get; set; }
+    public required int SeasonNumber { get; set; }
 }

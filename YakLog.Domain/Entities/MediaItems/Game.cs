@@ -7,9 +7,7 @@ using YakLog.Domain.Entities.MediaItems.Interfaces;
 
 namespace YakLog.Domain.Entities.MediaItems;
 
-public class Game : MediaItem, IFinishable
+public class Game : MediaItem
 {
     public required string Console { get; set; }
-    public bool Finished { get; set; }
-    public DateTime FinishedDate { get; set; }
 }
