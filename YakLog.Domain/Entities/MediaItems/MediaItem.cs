@@ -13,7 +13,7 @@ public abstract class MediaItem : IFinishable
     public required string Title { get; set; }
     public string? ImageFilePath { get; set; }
     public bool Finished { get; set; }
-    public DateTime FinishedDate { get; set; }
+    public DateTime? FinishedDate { get; set; }
 
     public long PortfolioId { get; set; }
     public Portfolio Portfolio { get; set; } = null!;

@@ -2,7 +2,7 @@
 using YakLog.Application.Helpers;
 using YakLog.Application.Services;
 using YakLog.DataTransferring.Responses;
-using YakLog.Persistence.Repositories;
+using YakLog.Persistence.Repositories.Interfaces;
 using YakLogApi.Dtos;
 using YakLogApi.Entities;
 using YakLogApi.Services.Interfaces;

@@ -20,25 +20,5 @@ public class PortfolioConfiguration : IEntityTypeConfiguration<Portfolio>
         builder.HasOne(p => p.User)
                .WithOne(u => u.Portfolio)
                .HasForeignKey<Portfolio>(p => p.UserId);
-
-        builder.HasMany(p => p.Games)
-               .WithOne(g => g.Portfolio)
-               .HasForeignKey(g => g.PortfolioId);
-
-        builder.HasMany(p => p.SeriesSeasons)
-               .WithOne(s => s.Portfolio)
-               .HasForeignKey(s => s.PortfolioId);
-
-        builder.HasMany(p => p.Movies)
-               .WithOne(m => m.Portfolio)
-               .HasForeignKey(m => m.PortfolioId);
-
-        builder.HasMany(p => p.Books)
-               .WithOne(b => b.Portfolio)
-               .HasForeignKey(b => b.PortfolioId);
-
-        builder.HasMany(p => p.Projects)
-               .WithOne(pr => pr.Portfolio)
-               .HasForeignKey(pr => pr.PortfolioId);
     }
 }

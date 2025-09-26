@@ -11,7 +11,7 @@ using YakLogApi.Persistence;
 namespace YakLog.Persistence.Migrations
 {
     [DbContext(typeof(YakLogDbContext))]
-    [Migration("20250926115920_AddPortfolioToUser")]
+    [Migration("20250926173640_AddPortfolioToUser")]
     partial class AddPortfolioToUser
     {
         /// <inheritdoc />
@@ -23,18 +23,27 @@ namespace YakLog.Persistence.Migrations
             modelBuilder.Entity("YakLog.Domain.Entities.MediaItems.MediaItem", b =>
                 {
                     b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("Finished")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("FinishedDate")
+                    b.Property<DateTime?>("FinishedDate")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ImageFilePath")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("MediaType")
+                        .IsRequired()
+                        .HasMaxLength(13)
+                        .HasColumnType("TEXT");
+
                     b.Property<long>("PortfolioId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<long?>("PortfolioId1")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Title")
@@ -44,9 +53,15 @@ namespace YakLog.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable((string)null);
+                    b.HasIndex("PortfolioId");
 
-                    b.UseTpcMappingStrategy();
+                    b.HasIndex("PortfolioId1");
+
+                    b.ToTable("MediaItem");
+
+                    b.HasDiscriminator<string>("MediaType").HasValue("MediaItem");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("YakLog.Domain.Entities.Portfolio", b =>
@@ -107,9 +122,7 @@ namespace YakLog.Persistence.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
-                    b.HasIndex("PortfolioId");
-
-                    b.ToTable("Books", (string)null);
+                    b.HasDiscriminator().HasValue("Book");
                 });
 
             modelBuilder.Entity("YakLog.Domain.Entities.MediaItems.Game", b =>
@@ -121,9 +134,7 @@ namespace YakLog.Persistence.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
-                    b.HasIndex("PortfolioId");
-
-                    b.ToTable("Games", (string)null);
+                    b.HasDiscriminator().HasValue("Game");
                 });
 
             modelBuilder.Entity("YakLog.Domain.Entities.MediaItems.Movie", b =>
@@ -136,18 +147,14 @@ namespace YakLog.Persistence.Migrations
                     b.Property<DateTime?>("ReleaseDate")
                         .HasColumnType("TEXT");
 
-                    b.HasIndex("PortfolioId");
-
-                    b.ToTable("Movies", (string)null);
+                    b.HasDiscriminator().HasValue("Movie");
                 });
 
             modelBuilder.Entity("YakLog.Domain.Entities.MediaItems.Project", b =>
                 {
                     b.HasBaseType("YakLog.Domain.Entities.MediaItems.MediaItem");
 
-                    b.HasIndex("PortfolioId");
-
-                    b.ToTable("Projects", (string)null);
+                    b.HasDiscriminator().HasValue("Project");
                 });
 
             modelBuilder.Entity("YakLog.Domain.Entities.MediaItems.SeriesSeason", b =>
@@ -157,9 +164,22 @@ namespace YakLog.Persistence.Migrations
                     b.Property<int>("SeasonNumber")
                         .HasColumnType("INTEGER");
 
-                    b.HasIndex("PortfolioId");
+                    b.HasDiscriminator().HasValue("SeriesSeason");
+                });
 
-                    b.ToTable("SeriesSeasons", (string)null);
+            modelBuilder.Entity("YakLog.Domain.Entities.MediaItems.MediaItem", b =>
+                {
+                    b.HasOne("YakLog.Domain.Entities.Portfolio", "Portfolio")
+                        .WithMany()
+                        .HasForeignKey("PortfolioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("YakLog.Domain.Entities.Portfolio", null)
+                        .WithMany("MediaItems")
+                        .HasForeignKey("PortfolioId1");
+
+                    b.Navigation("Portfolio");
                 });
 
             modelBuilder.Entity("YakLog.Domain.Entities.Portfolio", b =>
@@ -173,72 +193,9 @@ namespace YakLog.Persistence.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("YakLog.Domain.Entities.MediaItems.Book", b =>
-                {
-                    b.HasOne("YakLog.Domain.Entities.Portfolio", "Portfolio")
-                        .WithMany("Books")
-                        .HasForeignKey("PortfolioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Portfolio");
-                });
-
-            modelBuilder.Entity("YakLog.Domain.Entities.MediaItems.Game", b =>
-                {
-                    b.HasOne("YakLog.Domain.Entities.Portfolio", "Portfolio")
-                        .WithMany("Games")
-                        .HasForeignKey("PortfolioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Portfolio");
-                });
-
-            modelBuilder.Entity("YakLog.Domain.Entities.MediaItems.Movie", b =>
-                {
-                    b.HasOne("YakLog.Domain.Entities.Portfolio", "Portfolio")
-                        .WithMany("Movies")
-                        .HasForeignKey("PortfolioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Portfolio");
-                });
-
-            modelBuilder.Entity("YakLog.Domain.Entities.MediaItems.Project", b =>
-                {
-                    b.HasOne("YakLog.Domain.Entities.Portfolio", "Portfolio")
-                        .WithMany("Projects")
-                        .HasForeignKey("PortfolioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Portfolio");
-                });
-
-            modelBuilder.Entity("YakLog.Domain.Entities.MediaItems.SeriesSeason", b =>
-                {
-                    b.HasOne("YakLog.Domain.Entities.Portfolio", "Portfolio")
-                        .WithMany("SeriesSeasons")
-                        .HasForeignKey("PortfolioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Portfolio");
-                });
-
             modelBuilder.Entity("YakLog.Domain.Entities.Portfolio", b =>
                 {
-                    b.Navigation("Books");
-
-                    b.Navigation("Games");
-
-                    b.Navigation("Movies");
-
-                    b.Navigation("Projects");
-
-                    b.Navigation("SeriesSeasons");
+                    b.Navigation("MediaItems");
                 });
 
             modelBuilder.Entity("YakLogApi.Entities.User", b =>

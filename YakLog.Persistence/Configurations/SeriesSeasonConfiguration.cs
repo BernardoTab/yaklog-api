@@ -13,8 +13,6 @@ public class SeriesSeasonConfiguration : IEntityTypeConfiguration<SeriesSeason>
 {
     public void Configure(EntityTypeBuilder<SeriesSeason> builder)
     {
-        builder.ToTable("SeriesSeasons");
-
         builder.Property(ss => ss.SeasonNumber)
                .IsRequired();
     }

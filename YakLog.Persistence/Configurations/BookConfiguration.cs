@@ -13,8 +13,6 @@ public class BookConfiguration : IEntityTypeConfiguration<Book>
 {
     public void Configure(EntityTypeBuilder<Book> builder)
     {
-        builder.ToTable("Books");
-
         builder.Property(b => b.Author)
                .HasMaxLength(100)
                .IsRequired();

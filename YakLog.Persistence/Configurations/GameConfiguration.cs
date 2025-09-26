@@ -14,8 +14,6 @@ public class GameConfiguration : IEntityTypeConfiguration<Game>
 {
     public void Configure(EntityTypeBuilder<Game> builder)
     {
-        builder.ToTable("Games");
-
         builder.Property(g => g.Console)
                .HasMaxLength(100)
                .IsRequired();

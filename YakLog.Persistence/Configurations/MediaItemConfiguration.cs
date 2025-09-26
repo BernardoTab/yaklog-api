@@ -13,17 +13,25 @@ public class MediaItemConfiguration : IEntityTypeConfiguration<MediaItem>
 {
     public void Configure(EntityTypeBuilder<MediaItem> builder)
     {
-        // Mark this hierarchy as TPC
-        builder.UseTpcMappingStrategy();
-
         builder.HasKey(m => m.Id);
 
         builder.Property(m => m.Title)
                .IsRequired()
                .HasMaxLength(200);
 
+        builder.Property(m => m.ImageFilePath);
+        builder.Property(m => m.Finished);
+        builder.Property(m => m.FinishedDate);
+
+        builder.HasDiscriminator<string>("MediaType")
+            .HasValue<Game>("Game")
+            .HasValue<Book>("Book")
+            .HasValue<Movie>("Movie")
+            .HasValue<SeriesSeason>("SeriesSeason")
+            .HasValue<Project>("Project");
+
         builder.HasOne(m => m.Portfolio)
-               .WithMany() // concrete classes (Game, Movie, etc.) will have their own collections
+               .WithMany() 
                .HasForeignKey(m => m.PortfolioId);
     }
 }

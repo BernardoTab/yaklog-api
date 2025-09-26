@@ -11,12 +11,7 @@ namespace YakLog.Domain.Entities;
 public class Portfolio
 {
     public long Id { get; set; }
-    public ICollection<Game> Games { get; set; } = new List<Game>();
-    public ICollection<SeriesSeason> SeriesSeasons { get; set; } = new List<SeriesSeason>();
-    public ICollection<Movie> Movies { get; set; } = new List<Movie>();
-    public ICollection<Book> Books { get; set; } = new List<Book>();
-    public ICollection<Project> Projects { get; set; } = new List<Project>();
-
+    public ICollection<MediaItem> MediaItems { get; set; } = new List<MediaItem>();
 
     // Foreign key for 1-to-1 with User
     public long UserId { get; set; }

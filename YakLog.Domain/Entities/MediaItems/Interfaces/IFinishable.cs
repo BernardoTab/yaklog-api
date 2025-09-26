@@ -9,5 +9,5 @@ namespace YakLog.Domain.Entities.MediaItems.Interfaces;
 public interface IFinishable
 {
     bool Finished { get; set; }
-    DateTime FinishedDate { get; set; }
+    DateTime? FinishedDate { get; set; }
 }

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using YakLog.Persistence.Repositories.Interfaces;
 using YakLogApi.Persistence;
 
 namespace YakLog.Persistence.Repositories;
