@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -37,6 +38,19 @@ builder.Services.AddAuthentication()
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(keyBytes)
         };
+
+        options.Events = new JwtBearerEvents
+        {
+            OnMessageReceived = context =>
+            {
+                // Read JWT from cookie instead of Authorization header
+                if (context.Request.Cookies.ContainsKey("jwt"))
+                {
+                    context.Token = context.Request.Cookies["jwt"];
+                }
+                return Task.CompletedTask;
+            }
+        };
     });
 
 builder.Services.AddCors(options =>
@@ -46,7 +60,8 @@ builder.Services.AddCors(options =>
         policy
             .WithOrigins("http://localhost:4200") // <-- Angular dev server
             .AllowAnyHeader()
-            .AllowAnyMethod(); // GET, POST, etc.
+            .AllowAnyMethod()
+            .AllowCredentials(); // GET, POST, etc.
     });
 });
 
