@@ -10,5 +10,5 @@ namespace YakLog.Application.Services.Interfaces;
 
 public interface IPortfolioService : IService
 {
-    Task AddMediaItemAsync(MediaItemInputDto mediaItemInputDto);
+    Task AddMediaItemAsync(MediaItemInputDto mediaItemInputDto, string email);
 }

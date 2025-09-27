@@ -14,16 +14,25 @@ namespace YakLog.Application.Services;
 public class PortfolioService : IPortfolioService
 {
     private readonly IPortfolioRepository _portfolioRepository;
+    private readonly IUserRepository _userRepository;
 
-    public PortfolioService(IPortfolioRepository portfolioRepository)
+    public PortfolioService(
+        IPortfolioRepository portfolioRepository, 
+        IUserRepository userRepository)
     {
         _portfolioRepository = portfolioRepository;
+        _userRepository = userRepository;
     }
 
-    public async Task AddMediaItemAsync(MediaItemInputDto mediaItemInputDto)
+    public async Task AddMediaItemAsync(MediaItemInputDto mediaItemInputDto, string email)
     {
-        var fakeId = 2;
-        var portfolio = await _portfolioRepository.GetPortfolioByUserIdAsync(fakeId);
+        var user = await _userRepository.GetUserByEmailAsync(email);
+        if (user == null)
+        {
+            throw new Exception("User does not exist!");
+        }
+
+        var portfolio = await _portfolioRepository.GetPortfolioByUserIdAsync(user.Id);
         if (portfolio == null) {
             throw new Exception("Portfolio does not exist for User!");
         }

@@ -31,7 +31,7 @@ public class MediaItemConfiguration : IEntityTypeConfiguration<MediaItem>
             .HasValue<Project>("Project");
 
         builder.HasOne(m => m.Portfolio)
-               .WithMany() 
+               .WithMany(p => p.MediaItems) 
                .HasForeignKey(m => m.PortfolioId);
     }
 }

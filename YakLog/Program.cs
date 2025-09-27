@@ -15,19 +15,27 @@ builder.Services.AddYaklogServices();
 builder.Services.AddDbContext<YakLogDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
+    });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+var rawKey = builder.Configuration["Jwt:Key"]!;
+var keyBytes = Encoding.UTF8.GetBytes(rawKey);
 
 builder.Services.AddAuthentication()
     .AddJwtBearer("JwtBearer", options =>
     {
-        options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+        options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateLifetime = true,
+            ValidateAudience = false, // <-- skip audience
+            ValidateIssuer = false,   // optional
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
+            IssuerSigningKey = new SymmetricSecurityKey(keyBytes)
         };
     });
 

@@ -11,7 +11,7 @@ using YakLogApi.Persistence;
 namespace YakLog.Persistence.Migrations
 {
     [DbContext(typeof(YakLogDbContext))]
-    [Migration("20250926173640_AddPortfolioToUser")]
+    [Migration("20250927151721_AddPortfolioToUser")]
     partial class AddPortfolioToUser
     {
         /// <inheritdoc />
@@ -43,9 +43,6 @@ namespace YakLog.Persistence.Migrations
                     b.Property<long>("PortfolioId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<long?>("PortfolioId1")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -54,8 +51,6 @@ namespace YakLog.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("PortfolioId");
-
-                    b.HasIndex("PortfolioId1");
 
                     b.ToTable("MediaItem");
 
@@ -170,14 +165,10 @@ namespace YakLog.Persistence.Migrations
             modelBuilder.Entity("YakLog.Domain.Entities.MediaItems.MediaItem", b =>
                 {
                     b.HasOne("YakLog.Domain.Entities.Portfolio", "Portfolio")
-                        .WithMany()
+                        .WithMany("MediaItems")
                         .HasForeignKey("PortfolioId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("YakLog.Domain.Entities.Portfolio", null)
-                        .WithMany("MediaItems")
-                        .HasForeignKey("PortfolioId1");
 
                     b.Navigation("Portfolio");
                 });

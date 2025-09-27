@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using YakLog.Application.Services.Interfaces;
 using YakLog.DataTransferring.Dtos;
 using YakLog.DataTransferring.Responses;
@@ -18,7 +19,10 @@ public class PortfolioController : ControllerBase
         [FromServices] IPortfolioService portfolioService,
         [FromBody] MediaItemInputDto mediaItemInput)
     {
-        await portfolioService.AddMediaItemAsync(mediaItemInput);
+        string? email = User.FindFirst(ClaimTypes.Email)?.Value;
+        if (email == null) return Unauthorized();
+
+        await portfolioService.AddMediaItemAsync(mediaItemInput, email);
         return Ok();
     }
 }

@@ -25,6 +25,7 @@ public class PortfolioRepository : BaseRepository<Portfolio>, IPortfolioReposito
 
     public async Task AddMediaItemToPortfolioAsync(MediaItem mediaItem, Portfolio portfolio)
     {
+        mediaItem.Portfolio = portfolio;
         portfolio.MediaItems.Add(mediaItem);
         await _dbContext.SaveChangesAsync();
     }

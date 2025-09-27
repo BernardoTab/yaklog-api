@@ -42,7 +42,6 @@ namespace YakLog.Persistence.Migrations
                     FinishedDate = table.Column<DateTime>(type: "TEXT", nullable: true),
                     PortfolioId = table.Column<long>(type: "INTEGER", nullable: false),
                     MediaType = table.Column<string>(type: "TEXT", maxLength: 13, nullable: false),
-                    PortfolioId1 = table.Column<long>(type: "INTEGER", nullable: true),
                     Author = table.Column<string>(type: "TEXT", maxLength: 100, nullable: true),
                     Console = table.Column<string>(type: "TEXT", maxLength: 100, nullable: true),
                     ReleaseDate = table.Column<DateTime>(type: "TEXT", nullable: true),
@@ -58,22 +57,12 @@ namespace YakLog.Persistence.Migrations
                         principalTable: "Portfolios",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_MediaItem_Portfolios_PortfolioId1",
-                        column: x => x.PortfolioId1,
-                        principalTable: "Portfolios",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_MediaItem_PortfolioId",
                 table: "MediaItem",
                 column: "PortfolioId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_MediaItem_PortfolioId1",
-                table: "MediaItem",
-                column: "PortfolioId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Portfolios_UserId",
